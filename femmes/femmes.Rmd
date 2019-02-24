@@ -1,0 +1,311 @@
+---
+title: "All about you!"
+subtitle: "FEMMES 2019"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE)
+library(learnr)
+library(googledrive)
+library(googlesheets4)
+library(tidyverse)
+library(knitr)
+
+# load data
+drive_deauth()
+sheets_deauth()
+# Session number: 4
+ss_url <- "https://docs.google.com/spreadsheets/d/1zBa86oZLSrN1Kuit7apKeyX1a3AQCLIcYkMjiqhwAd0/edit?usp=sharing"
+survey <- read_sheet(
+  as_id(ss_url), skip = 1, 
+  col_names = c("time_stamp", "num_siblings", "fav_color", "height", 
+                "shoe_size", "fav_chocolate", "fav_pet", 
+                "fav_season", "day_old")
+  ) %>%
+  select(-time_stamp)
+```
+
+
+## Shoe size and height
+
+First, let's take a look to see if there is a relationship between shoe size 
+and heights of respondents.
+
+```{r height-shoe}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point(color = "purple") +
+  labs(title = "Relationship between shoe size and height", 
+       x = "Shoe size", 
+       y = "Height (inches)")
+```
+
+<br>
+
+```{r height-shoe-text}
+textInput(inputId = "height-shoe-text", label = "Does there appear to be a relationship between shoe size and height? If yes is the relationship positive or negative?", width = "100%")
+```
+
+<br>
+
+The plot above, called a **scatterplot**, was created using a programming 
+language called R. You responded to the survey on a Google Form. Your 
+responses were saved as a data file that we accessed using this programming 
+language, and then we plotted your responses to two questions (shoe size and height) in a scatterplot.
+
+Next, we'll take a closer look at the data collected from the survey, and re-create the plot shown above together, and customize it.
+
+## Data
+
+Take a look at the table below. This is the data we collected from you! Can you 
+recognize your own answers? Scroll to the right to see the entire table
+
+```{r data}
+survey %>% kable()
+```
+
+<br>
+
+This is called a **dataset**. It's made up of rows and columns. Let's think 
+about what each row and what each column represents.
+
+```{r row-column}
+question("What does each row of the dataset represent?",
+    answer("One of you (respondent)", correct = TRUE),
+    answer("A question (variable)"),
+    allow_retry = TRUE
+  )
+question("What does each column of the dataset represent?",
+    answer("One of you (respondent)"),
+    answer("A question (variable)", correct = TRUE),
+    allow_retry = TRUE
+  )
+```
+
+## Plotting
+
+### 
+
+Let's revisit that plot visualizing the relationship between shoe 
+size and height one more time.
+
+This time, you get to create the plot! To do so, hit the `Run Code` button.
+
+```{r height-shoe-recreate, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point() +
+  labs(title = "Relationship between shoe size and height", 
+       x = "Shoe size", 
+       y = "Height (inches)")
+```
+
+Yay! You ran your first piece of R code!
+
+Next, we'll break down the plotting code, and go through it line-by-line.
+
+### Step 1. Lay down your canvas
+
+```{r height-shoe-1, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) 
+```
+
+### Step 2. Represent your data with points
+
+```{r height-shoe-2, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point()
+```
+
+### Step 3. Label your plot
+
+```{r height-shoe-3, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point() + 
+  labs(title = "Relationship between shoe size and height", 
+       x = "Shoe size", 
+       y = "Height (inches)")
+```
+
+```{r height-shoe-3-text}
+textInput(inputId = "height-shoe-3-text", label = "Can you spot the small difference between the plot you just made and the first plot we saw?", width = "100%")
+```
+
+```{r change-which-line}
+question("Which line of code above would you need to update to make this plot look like the first plot we saw?",
+    answer("Line 1"),
+    answer("Line 2", correct = TRUE),
+    answer("Line 3"),
+    answer("Line 4"),
+    answer("Line 5"),
+    allow_retry = TRUE
+  )
+```
+
+### Step 4. Customize
+
+Lastly, we'll change the color of the points. To do so, we add a new argument 
+to the `geom_point()` function. Let's make the points purple.
+
+```{r height-shoe-4, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point(color = "purple") + 
+  labs(title = "Relationship between shoe size and height", 
+       x = "Shoe size", 
+       y = "Height (inches)")
+```
+
+### Your turn!
+
+Now pick a different color, and fill in the blank below with the name of the 
+color. 
+
+If you need inspiration for a color, you can pick one from <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">here</a>. Note that the 
+name of the color needs to be spelled exactly the same as it appears on the 
+linked document.
+
+```{r height-shoe-5, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = height)) + 
+  geom_point(color = "____") + 
+  labs(title = "Relationship between shoe size and height", 
+       x = "Shoe size", 
+       y = "Height (inches)")
+```
+
+## Shoe size and number of siblings
+
+### 
+
+```{r shoe-sibling, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = num_siblings)) + 
+  geom_point(color = "purple")
+```
+
+<br>
+
+```{r shoe-sibling-text}
+textInput(inputId = "shoe-sibling-text", label = "Does there appear to be a relationship between shoe size and number of siblings? If yes is the relationship positive or negative?", width = "100%")
+```
+
+### Your turn!
+
+The labels for the plot are missing in the code below. Enter the appropriate 
+labels, and run your code.
+
+```{r shoe-sibling-labels, exercise=TRUE}
+ggplot(data = survey, mapping = aes(x = shoe_size, y = num_siblings)) + 
+  geom_point(color = "purple")  + 
+  labs(title = "____", 
+       x = "____", 
+       y = "____")
+```
+
+PS: You can also change the point colors if you want.
+
+## Favorite color
+
+### Bar plot
+
+The following visualization is called a **bar plot**, it's used to visualize 
+**categorical** data.
+
+```{r fav-color}
+ggplot(data = survey, mapping = aes(x = fav_color, fill = fav_color)) + 
+  geom_bar() +
+  labs(x = "Color", title = "Favorite color")
+```
+
+<br>
+
+```{r fav-color-text}
+textInput(inputId = "fav-color-text", label = "What is the most popular color among the respondents?", width = "100%")
+```
+
+### Add some color
+
+Let's add some color to our plot.
+
+```{r fav-color-color, exercise=TRUE}
+color_pallete <- c(
+  "Red" = "red",
+  "Blue" = "blue",
+  "Green" = "darkgreen",
+  "Pink" = "pink",
+  "Other" = "orange"
+)
+
+ggplot(data = survey, mapping = aes(x = fav_color, fill = fav_color)) + 
+  geom_bar() +
+  labs(x = "Color", title = "Favorite color") +
+  scale_fill_manual(name = "Color", 
+                    values = color_pallete, 
+                    limits = names(color_pallete))
+```
+
+### Your turn!
+
+Update the code below so the `Other` category is colored gray instead of orange.
+
+```{r fav-color-change, exercise=TRUE}
+color_pallete <- c(
+  "Red" = "red",
+  "Blue" = "blue",
+  "Green" = "darkgreen",
+  "Pink" = "pink",
+  "Other" = "orange"
+)
+
+ggplot(data = survey, mapping = aes(x = fav_color, fill = fav_color)) + 
+  geom_bar() +
+  labs(x = "Color", title = "Favorite color") +
+  scale_fill_manual(name = "Color", 
+                    values = color_pallete, 
+                    limits = names(color_pallete))
+```
+
+## Favorite chocolate
+
+### 
+
+We'll use another bar plot to visualize your favorite chocolate choices.
+
+Note the last line of the code, which **flip**s the **coord**inates, and makes 
+the bars horizontal.
+
+```{r fav-chocolate, exercise = TRUE}
+ggplot(data = survey, mapping = aes(x = fav_chocolate)) + 
+  geom_bar() +
+  labs(x = "", title = "Favorite chocolate") + 
+  coord_flip()
+```
+
+<br>
+
+```{r fav-chocolate-text}
+textInput(inputId = "fav-chocolate-text", label = "What is the most popular chocolate among the respondents?", width = "100%")
+```
+
+### Your turn!
+
+Update the code below to color the bars according to the various chocolate 
+colors. For the "I don't like chocolate" category you can use any color you 
+like. Refer to <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">this document</a> for names of colors in R.
+
+```{r fav-chocolate-colors, exercise = TRUE}
+color_pallete <- c(
+  "White chocolate" = "___",
+  "Milk chocolate" = "___",
+  "Dark chocolate" = "___",
+  "I don't like chocolate" = "___"
+)
+
+ggplot(data = survey, mapping = aes(x = fav_chocolate, fill = fav_chocolate)) + 
+  geom_bar() +
+  labs(x = "", title = "Favorite chocolate") + 
+  coord_flip() +
+  scale_fill_manual(name = "Color", 
+                    values = color_pallete, 
+                    limits = names(color_pallete))
+```
